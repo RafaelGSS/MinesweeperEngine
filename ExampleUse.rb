@@ -1,23 +1,17 @@
-require_relative 'Minesweeper'
-require_relative 'SimplePrinter'
-require_relative 'PrettyPrinter'
+require_relative 'src/Minesweeper'
+require_relative 'src/SimplePrinter'
+require_relative 'src/PrettyPrinter'
 
 width, height, num_mines = 10, 20, 50
-game = Minesweeper.new(height,width, num_mines)
-
+game = Minesweeper.new(width, height, num_mines)
 
 while game.still_playing?
-  puts "Escolha um movimento: "
-  valid_move = game.play(gets.chomp.to_i, gets.chomp.to_i)
-  puts "Escolha uma flag: "
-  valid_flag = game.flag(gets.chomp.to_i, gets.chomp.to_i) 
+  valid_move = game.play(rand(height), rand(width))
+  valid_flag = game.flag(rand(height), rand(width))
   if valid_move or valid_flag
     printer = (rand > 0.5) ? SimplePrinter.new : PrettyPrinter.new
     printer.print(game.board_state)
-  else
-    puts "Jogada invalida!"
   end
-
 end
 
 puts "Fim do jogo!"
@@ -27,4 +21,3 @@ else
   puts "Você perdeu! As minas eram:"
   PrettyPrinter.new.print(game.board_state(xray: true))
 end
-
