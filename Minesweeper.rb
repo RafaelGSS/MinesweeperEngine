@@ -1,4 +1,4 @@
-require 'Board'
+require_relative 'Board'
 
 class Minesweeper
     attr_accessor :still_playing, :remaining_plays, :flags, :board
@@ -21,6 +21,7 @@ class Minesweeper
     def play(x, y)
         return false if !valid_play(x,y)
 
+        puts "passou!"
         if(@board[x,y].is_bomb?)
             @still_playing = false
             return true
@@ -29,7 +30,14 @@ class Minesweeper
         @board[x,y].checked = true
         @remaining_plays -= 1
 
-        @board.open_empty(x,y) if @board[x,y].is_empty?
+        # TODO 
+        print "Entrou remaing com: " 
+        print @remaining_plays
+        puts
+        @board.open_empty(x,y, @remaining_plays.to_i) if @board[x,y].is_empty?
+        print "Saiu remaing com: " 
+        print @remaining_plays
+        puts
 
         @still_playing = false if victory?
 
@@ -39,7 +47,8 @@ class Minesweeper
     def flag(x, y)
         if(!@board.field_valid(x,y))
             return false
-
+        end
+        
         return false if @board[x,y].is_checked? || @flags == @mines
 
         if(@board[x,y].is_flag?)
@@ -58,5 +67,7 @@ class Minesweeper
     end
 
     def board_state(xray = false)
+        puts "lol"
     end
+
 end

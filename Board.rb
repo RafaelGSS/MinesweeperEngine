@@ -1,4 +1,4 @@
-require 'Field'
+require_relative 'Field'
 
 class Board
     attr_accessor :width, :height, :mines, :matrix
@@ -10,16 +10,19 @@ class Board
         
         init_board()
         init_mines()
+        printer()
     end
 
     # for capture around, need x-1 and y+1
     # recursive mode for open all fields emptys
-    def open_empty(x, y)
+    def open_empty(x, y, remaining_plays)
        for x_ in x-1..x+1
+        next if x_ < 0 || x_ >= @height
             for y_ in y-1..y+1
+                next if y_ < 0 || y_ >= @width
                 if(field_valid(x_,y_) && !@matrix[x_][y_].is_checked? && !@matrix[x_][y_].is_flag?)
                     @matrix[x_][y_].checked = true
-                    @remaining_plays -= 1
+                    remaining_plays -= 1
                     if(@matrix[x_][y_].is_empty?)
                         open_empty(x_, y_)
                     end
@@ -28,22 +31,35 @@ class Board
         end
     end
 
+    #tests
+    def printer()
+        for x in 0..@height-1
+            for y in 0..@width-1
+               print "[ "
+               print @matrix[x][y].value
+               print " ]"
+            end
+            puts
+        end
+    end
     # for capture around, need height-1 and width-1
     def init_board()
         @matrix = []
 
         for x in 0..@height-1
+            vector = []
             for y in 0..@width-1
-                @matrix[x][y] = Field.new(0)
+               vector.push(Field.new(0))
             end
+            @matrix.push(vector)
         end
     end
 
     def init_mines()
         for min in 1..@mines
             while true
-                x = rand(0..(height-1))
-                y = rand(0..(height-1))
+                x = rand(0..(@height-1))
+                y = rand(0..(@width-1))
 
                 if !@matrix[x][y].is_bomb?
                     @matrix[x][y].value = '#'

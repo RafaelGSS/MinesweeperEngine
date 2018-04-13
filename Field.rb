@@ -1,9 +1,14 @@
 class Field
-    attr_accessor :value, :checked
+    attr_accessor :value, :checked, :flag
 
     def initialize(value)
         @value = value
         @checked = false
+        @flag = false
+    end
+
+    def is_flag?
+        @flag
     end
 
     def is_bomb?
