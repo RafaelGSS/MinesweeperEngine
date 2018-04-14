@@ -2,32 +2,41 @@ require_relative '../src/Minesweeper'
 
 class TestManager
 
-    def initialize
+    def run(victory=true)
+        width = rand(20)+1
+        height = rand(20)+1
+        mines = rand(width*height)
 
-    end
-
-    def run
-        if !test_mines
-            puts "error test_mines"
-        end
-        if !test_flags
-            puts "error test_flags"
-        end
-        if !test_win
-            puts "error test_win"
-        end
-    end
-
-    def test_mines
+        puts "Testando com matriz #{height} x #{width} e #{mines} minas"
         game = Minesweeper.new(width, height, mines)
+
+        height_jg, width_jg = 0, 0
+        while game.still_playing?
+            if(victory)
+                if !game.is_bomb(height_jg, width_jg)
+                    game.play(height_jg, width_jg)
+                end
+            else
+                if game.is_bomb(height_jg, width_jg)
+                    game.play(height_jg, width_jg)
+                end
+            end
+            
+            width_jg += 1
+
+            if(width_jg == width)
+                width_jg = 0
+                height_jg += 1
+            end
+        end
+
+        if game.victory? && victory
+            puts "Works! Victory TRUE"
+        elsif !game.victory? && !victory
+            puts "Works! Defeat TRUE"
+        else
+            puts "Error"
+        end
+
     end
-
-    def test_flags
-
-    end
-    
-    def test_win
-
-    end
-
 end

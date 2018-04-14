@@ -11,7 +11,6 @@ class Board
         
         init_board()
         init_mines()
-        #printer(false)
     end
 
     def open_empty(x, y, decrease_plays=false)
@@ -29,19 +28,7 @@ class Board
             end
         end
     end
-
-    #tests
-    def printer(is_sd=false)
-        for x in 0..@height-1
-            for y in 0..@width-1
-               print "[ "
-               print (is_sd) ? @matrix[x][y].value : "."
-               print " ]"
-            end
-            puts
-        end
-    end
-    
+  
     def init_board()
         @matrix = []
 

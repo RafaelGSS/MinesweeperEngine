@@ -26,6 +26,11 @@ class Minesweeper
         return @board.field_valid(x,y) && !@board[x,y].is_checked? && !@board[x,y].is_flag?
     end
 
+    #only for test win
+    def is_bomb(x,y)
+        @board[x,y].is_bomb?
+    end
+
     def play(x, y)
         return false if !valid_play(x,y)
 
@@ -40,7 +45,7 @@ class Minesweeper
         if @board[x,y].is_empty?
             @board.open_empty(x, y, true)
         end
-        
+
         @still_playing = false if victory?
 
         return true
